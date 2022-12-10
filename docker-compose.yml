@@ -30,6 +30,18 @@ services:
       - tobias-network
 
   app3:
+    image: imkunyoung/gatewayservice_saler:1.0
+    container_name: gatewayservice_saler
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+    ports:
+      - 8001:8001
+    volumes:
+      - /app3
+    networks:
+      - tobias-network
+
+  app4:
     image: imkunyoung/gatewayservice_manager:1.0
     container_name: gatewayservice_manager
     environment:
@@ -37,11 +49,11 @@ services:
     ports:
       - 8002:8002
     volumes:
-      - /app3
+      - /app4
     networks:
       - tobias-network
 
-  app4:
+  app5:
     image: imkunyoung/configservice:1.0
     container_name: configservice
     environment:
@@ -49,9 +61,25 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - /app4
+      - /app5
     networks:
       - tobias-network
+
+# mariadb
+#  app6:
+#    image: mariadb:10.5.8
+#    container_name: mariadb
+#    ports:
+#      - 3306:3306
+#    volumes:
+#      - /app6
+#    networks:
+#      - tobias-network
+#    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=bootuser
+#      - MYSQL_DATABASE=bootex
+#      - MYSQL_USER=bootuser
 
 
 networks:
