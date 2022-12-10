@@ -1,0 +1,59 @@
+version: '3.8'
+
+# 네트워크 tobias-network 생성
+
+
+
+services:
+
+  app:
+    image: imkunyoung/discoveryservice
+    container_name: discoveryservice
+    ports:
+      - 8761:8761
+    volumes:
+      - /app
+    networks:
+      - tobias-network
+
+  app2:
+    image: imkunyoung/gatewayservice_client:1.0
+    container_name: gatewayservice_client
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+    ports:
+      - 8000:8000
+      - 80:80
+    volumes:
+      - /app2
+    networks:
+      - tobias-network
+
+  app3:
+    image: imkunyoung/gatewayservice_manager:1.0
+    container_name: gatewayservice_manager
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+    ports:
+      - 8002:8002
+    volumes:
+      - /app3
+    networks:
+      - tobias-network
+
+  app4:
+    image: imkunyoung/configservice:1.0
+    container_name: configservice
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+    ports:
+      - 8888:8888
+    volumes:
+      - /app4
+    networks:
+      - tobias-network
+
+
+networks:
+  tobias-network:
+    driver: bridge
