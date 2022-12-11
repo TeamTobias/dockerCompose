@@ -249,6 +249,17 @@ services:
       - tobias-network
 
 
+  app11:
+    image: imkunyoung/myapp:1.0
+    container_name: myapp
+    ports:
+      - 3000:3000
+    volumes:
+      - /app11
+    networks:
+      - tobias-network
+
+
 networks:
   tobias-network:
     driver: bridge
