@@ -67,7 +67,7 @@ services:
 
 
 
-  mariadb_coupon:
+  app6:
     image: mariadb:latest
     container_name: mariadb_coupon
     command: --default-authentication-plugin=mysql_native_password
@@ -85,7 +85,7 @@ services:
     networks:
       - tobias-network
 
-  app6:
+  app7:
     image: imkunyoung/couponservice:1.0
     container_name: couponservice
     environment:
@@ -93,10 +93,12 @@ services:
       - spring.datasource.url=jdbc:mariadb://mariadb_coupon:3307/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
       - spring.datasource.username=couponservice
       - spring.datasource.password=1234
+    depends_on:
+      - app6
     ports:
       - 8003:8003
     volumes:
-      - /app6
+      - /app7
     networks:
       - tobias-network
 # mariadb
