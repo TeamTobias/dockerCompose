@@ -1,0 +1,41 @@
+version: '3.8'
+
+# mariadb 컨테이너 생성하고 clientservice 컨테이너에 연결
+services:
+  client-mariadb:
+    image: mariadb:latest
+    container_name: client-mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=clientservice
+      - MYSQL_USER=clientservice
+      - MYSQL_PASSWORD=1234
+#    ports:
+#      - 3306:3306
+    volumes:
+      - ~/docker/client-mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/docker/client-mariadb/var/log/maria:/var/log/maria
+    networks:
+      - tobias-network
+
+  app:
+    image: imkunyoung/clientservice:1.0
+    container_name: clientservice
+    depends_on:
+      - client-mariadb
+    environment:
+      - server.port=8005
+      - spring.profiles.active=prod
+      - spring.datasource.url=jdbc:mariadb://client-mariadb:3306/clientservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.username=clientservice
+      - spring.datasource.password=1234
+    volumes:
+      - /app
+    networks:
+      - tobias-network
+
+networks:
+  tobias-network:
+    driver: bridge
