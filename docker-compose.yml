@@ -77,8 +77,8 @@ services:
       - MYSQL_DATABASE=couponservice
       - MYSQL_USER=couponservice
       - MYSQL_PASSWORD=1234
-    ports:
-      - 3307:3306
+#    ports:
+#      - 3306:3306
     volumes:
       - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
       - ~/docker/mariadb/var/log/maria:/var/log/maria
@@ -90,13 +90,13 @@ services:
     container_name: couponservice
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
-      - spring.datasource.url=jdbc:mariadb://coupon-mariadb:3307/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.url=jdbc:mariadb://coupon-mariadb:3306/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
       - spring.datasource.username=couponservice
       - spring.datasource.password=1234
     depends_on:
       - coupon-mariadb
-    ports:
-      - 8003:8003
+#    ports:
+#      - 8003:8003
     volumes:
       - /app7
     networks:
