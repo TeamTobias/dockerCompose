@@ -1,0 +1,46 @@
+version: '3.8'
+
+# 네트워크 tobias-network 생성
+
+
+
+# mariadb 컨테이너 생성하고 couponservice 컨테이너에 연결
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=couponservice
+      - MYSQL_USER=couponservice
+      - MYSQL_PASSWORD=1234
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/docker/mariadb/var/log/maria:/var/log/maria
+    networks:
+      - tobias-network
+
+  app:
+    image: imkunyoung/couponservice:1.0
+    container_name: couponservice
+    environment:
+      - spring.datasource.url=jdbc:mariadb://mariadb:3306/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.username=couponservice
+      - spring.datasource.password=1234
+    ports:
+      - 8003:8003
+    volumes:
+      - /app
+    networks:
+      - tobias-network
+
+
+
+
+networks:
+  tobias-network:
+    driver: bridge
