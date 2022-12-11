@@ -67,9 +67,9 @@ services:
 
 
 
-  app6:
+  coupon-mariadb:
     image: mariadb:latest
-    container_name: mariadb_coupon
+    container_name: coupon-mariadb
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
@@ -90,11 +90,11 @@ services:
     container_name: couponservice
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
-      - spring.datasource.url=jdbc:mariadb://mariadb_coupon:3307/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.url=jdbc:mariadb://coupon-mariadb:3307/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
       - spring.datasource.username=couponservice
       - spring.datasource.password=1234
     depends_on:
-      - app6
+      - coupon-mariadb
     ports:
       - 8003:8003
     volumes:

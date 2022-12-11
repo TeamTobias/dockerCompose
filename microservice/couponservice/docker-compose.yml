@@ -6,9 +6,9 @@ version: '3.8'
 
 # mariadb 컨테이너 생성하고 couponservice 컨테이너에 연결
 services:
-  mariadb:
+  coupon-mariadb:
     image: mariadb:latest
-    container_name: mariadb
+    container_name: coupon-mariadb
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
@@ -28,9 +28,11 @@ services:
     image: imkunyoung/couponservice:1.0
     container_name: couponservice
     environment:
-      - spring.datasource.url=jdbc:mariadb://mariadb:3306/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.url=jdbc:mariadb://coupon-mariadb:3306/couponservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
       - spring.datasource.username=couponservice
       - spring.datasource.password=1234
+    depends_on:
+      - coupon-mariadb
     ports:
       - 8003:8003
     volumes:
