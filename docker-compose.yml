@@ -35,7 +35,7 @@ services:
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
     ports:
-      - 8001:8001
+      - 81:81
     volumes:
       - /app3
     networks:
@@ -47,7 +47,7 @@ services:
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
     ports:
-      - 8002:8002
+      - 81:81
     volumes:
       - /app4
     networks:
