@@ -282,7 +282,7 @@ services:
     image: imkunyoung/salerservice:1.0
     container_name: salerservice
     depends_on:
-      - F
+      - saler-mariadb
       - kafka
     environment:
         - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
