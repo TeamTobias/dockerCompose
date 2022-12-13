@@ -314,7 +314,7 @@ services:
       - ~/docker/managers-mariadb/var/lib/mysql:/var/lib/mysql
       - ~/docker/managers-mariadb/var/log/maria:/var/log/maria
     networks:
-      - manager-network
+      - tobias-network
 
   app13:
     image: imkunyoung/managerservice:1.0
