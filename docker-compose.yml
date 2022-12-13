@@ -260,6 +260,43 @@ services:
       - tobias-network
 
 
+  saler-mariadb:
+    image: mariadb:latest
+    container_name: saler-mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=salerservice
+      - MYSQL_USER=salerservice
+      - MYSQL_PASSWORD=1234
+    #    ports:
+    #      - 3306:3306
+    volumes:
+      - ~/docker/saler-mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/docker/saler-mariadb/var/log/maria:/var/log/maria
+    networks:
+      - tobias-network
+
+  app12:
+    image: imkunyoung/salerservice:1.0
+    container_name: salerservice
+    depends_on:
+      - F
+      - kafka
+    environment:
+        - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+        - spring.cloud.config.uri=http://configservice:8888
+        - spring.profiles.active=prod
+        - spring.datasource.url=jdbc:mariadb://saler-mariadb:3306/salerservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+        - spring.datasource.username=salerservice
+        - spring.datasource.password=1234
+        - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+    volumes:
+      - /app12
+    networks:
+      - tobias-network
+
 networks:
   tobias-network:
     driver: bridge
