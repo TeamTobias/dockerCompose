@@ -21,7 +21,6 @@ services:
     container_name: gatewayservice_client
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
-      - server.port=3000
     ports:
       - 8000:8000
       - 80:80
