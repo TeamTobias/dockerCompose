@@ -21,6 +21,7 @@ services:
     container_name: gatewayservice_client
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+      - server.port=3000
     ports:
       - 8000:8000
       - 80:80
@@ -256,8 +257,8 @@ services:
       - 3000:3000
     volumes:
       - /app11
-    networks:
-      - tobias-network
+  #    networks:
+  #      - tobias-network
 
 
   saler-mariadb:
@@ -285,13 +286,13 @@ services:
       - saler-mariadb
       - kafka
     environment:
-        - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
-        - spring.cloud.config.uri=http://configservice:8888
-        - spring.profiles.active=prod
-        - spring.datasource.url=jdbc:mariadb://saler-mariadb:3306/salerservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
-        - spring.datasource.username=salerservice
-        - spring.datasource.password=1234
-        - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+      - spring.cloud.config.uri=http://configservice:8888
+      - spring.profiles.active=prod
+      - spring.datasource.url=jdbc:mariadb://saler-mariadb:3306/salerservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.username=salerservice
+      - spring.datasource.password=1234
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
     volumes:
       - /app12
     networks:
@@ -333,6 +334,38 @@ services:
       - kafka
     volumes:
       - /app13
+    networks:
+      - tobias-network
+
+
+  delivery-postgresql:
+    image: postgres:latest
+    container_name: delivery-postgresql
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: delivery
+    #    ports:
+    #      - 5432:5432
+    volumes:
+      - ./data/deliverypostgres/:/var/lib/deliverypostgresql/data
+    networks:
+      - tobias-network
+
+  app14:
+    depends_on:
+      - delivery-postgresql
+      - kafka
+    image: imkunyoung/deliveryservice:1.0
+    container_name: deliveryservice
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://delivery-postgresql:5432/delivery
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_PLATFORM=postgres
+    volumes:
+      - /app14
     networks:
       - tobias-network
 
