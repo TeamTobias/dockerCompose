@@ -95,6 +95,7 @@ services:
       - spring.datasource.username=couponservice
       - spring.datasource.password=1234
     depends_on:
+      - kafka
       - coupon-mariadb
     #    ports:
     #      - 8003:8003
