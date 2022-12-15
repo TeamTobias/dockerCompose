@@ -423,6 +423,38 @@ services:
 #    networks:
 #      - tobias-network
 
+  orderservice-postgresql:
+    image: postgres:latest
+    container_name: orderservice-postgresql
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: orderservice
+    #    ports:
+    #      - 5432:5432
+    volumes:
+      - ./data/deliverypostgres/:/var/lib/deliverypostgresql/data
+    networks:
+      - tobias-network
+
+  app14:
+    depends_on:
+      - orderservice-postgresql
+      - kafka
+    image: imkunyoung/orderservice:1.0
+    container_name: orderservice
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://orderservice-postgresql:5432/orderservice
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_PLATFORM=postgres
+    volumes:
+      - /app14
+    networks:
+      - tobias-network
+
+
 networks:
   tobias-network:
     driver: bridge
