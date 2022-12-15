@@ -359,6 +359,8 @@ services:
     image: imkunyoung/deliveryservice:1.0
     container_name: deliveryservice
     environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+#      - spring.cloud.config.uri=http://configservice:8888
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://delivery-postgresql:5432/delivery
       - SPRING_DATASOURCE_USERNAME=admin

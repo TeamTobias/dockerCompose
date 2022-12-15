@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+
+  app:
+    image: imkunyoung/discoveryservice
+    container_name: discoveryservice
+    ports:
+      - 8761:8761
+    volumes:
+      - /app
+    networks:
+      - tobias-network
