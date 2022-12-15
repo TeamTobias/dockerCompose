@@ -486,7 +486,7 @@ services:
       - spring.datasource.url=jdbc:mariadb://product-mariadb:3306/productservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
       - spring.datasource.username=productservice
       - spring.datasource.password=1234
-      - spring.kafka.bootstrap-servers=kafka:9092
+#      - spring.kafka.bootstrap-servers=kafka:9092
     depends_on:
       - product-mariadb
       - app5
