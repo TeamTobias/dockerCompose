@@ -459,6 +459,42 @@ services:
     networks:
       - tobias-network
 
+  product-mariadb:
+    image: mariadb:latest
+    container_name: product-mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=productservice
+      - MYSQL_USER=productservice
+      - MYSQL_PASSWORD=1234
+    #    ports:
+    #      - 3306:3306
+    volumes:
+      - ~/docker/product-mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/docker/product-mariadb/var/log/maria:/var/log/maria
+    networks:
+      - tobias-network
+
+  app18:
+    image: imkunyoung/productservice:1.0
+    container_name: productservice
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+      - spring.profiles.active=prod
+      - spring.datasource.url=jdbc:mariadb://manager-mariadb:3306/productservice?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+      - spring.datasource.username=productservice
+      - spring.datasource.password=1234
+      - spring.kafka.bootstrap-servers=kafka:9092
+    depends_on:
+      - product-mariadb
+      - app5
+      - kafka
+    volumes:
+      - /app18
+    networks:
+      - tobias-network
 
 networks:
   tobias-network:
