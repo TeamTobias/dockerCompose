@@ -436,7 +436,7 @@ services:
     #    ports:
     #      - 5432:5432
     volumes:
-      - ./data/deliverypostgres/:/var/lib/deliverypostgresql/data
+      - ./data/orderpostgres/:/var/lib/dorderpostgresql/data
     networks:
       - tobias-network
 
@@ -447,6 +447,8 @@ services:
     image: imkunyoung/orderservice:1.0
     container_name: orderservice
     environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+      - spring.cloud.config.uri=http://configservice:8888
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://orderservice-postgresql:5432/orderservice
       - SPRING_DATASOURCE_USERNAME=admin
