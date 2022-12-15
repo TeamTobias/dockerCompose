@@ -399,8 +399,7 @@ services:
     image: cassandra:3.11.13
     container_name: recentlyviewedservice-cassandra
     volumes:
-      - ~/docker/recentlyviewedservice-cassandra/var/lib/cassandra:/var/lib/cassandra
-      - ~/docker/recentlyviewedservice-cassandra/var/log/cassandra:/var/log/cassandra
+      - ~/volumes/jhipster/recentlyviewedService/cassandra/:/var/lib/cassandra/data
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     #    ports:
