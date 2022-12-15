@@ -380,6 +380,7 @@ services:
     depends_on:
       - recentlyviewedservice-cassandra
       - kafka
+      - app5
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
       - spring.cloud.config.uri=http://configservice:8888
@@ -398,30 +399,31 @@ services:
     image: cassandra:3.11.13
     container_name: recentlyviewedservice-cassandra
     volumes:
-      - ~/volumes/jhipster/recentlyviewedService/cassandra/:/var/lib/cassandra/data
+      - ~/docker/recentlyviewedservice-cassandra/var/lib/cassandra:/var/lib/cassandra
+      - ~/docker/recentlyviewedservice-cassandra/var/log/cassandra:/var/log/cassandra
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
-#    ports:
-#      - 7000:7000
-#      - 7001:7001
-#      - 7199:7199
-#      - 9042:9042
-#      - 9160:9160
+    #    ports:
+    #      - 7000:7000
+    #      - 7001:7001
+    #      - 7199:7199
+    #      - 9042:9042
+    #      - 9160:9160
     networks:
       - tobias-network
-#  recentlyviewedservice-cassandra-migration:
-#    environment:
-#      - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
-#      - USER=docker-cassandra-migration
-#      # - DEBUG_LOG=1 # uncomment to show debug logs during the migration process
-#      - CREATE_KEYSPACE_SCRIPT=create-keyspace-prod.cql
-#    build:
-#      context: .
-#      dockerfile: cassandra/Cassandra-Migration.Dockerfile
-#    volumes:
-#      - ../resources/config/cql:/cql:ro
-#    networks:
-#      - tobias-network
+  #  recentlyviewedservice-cassandra-migration:
+  #    environment:
+  #      - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
+  #      - USER=docker-cassandra-migration
+  #      # - DEBUG_LOG=1 # uncomment to show debug logs during the migration process
+  #      - CREATE_KEYSPACE_SCRIPT=create-keyspace-prod.cql
+  #    build:
+  #      context: .
+  #      dockerfile: cassandra/Cassandra-Migration.Dockerfile
+  #    volumes:
+  #      - ../resources/config/cql:/cql:ro
+  #    networks:
+  #      - tobias-network
 
   orderservice-postgresql:
     image: postgres:latest
