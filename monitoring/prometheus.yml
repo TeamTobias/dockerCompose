@@ -23,3 +23,23 @@ scrape_configs:
     metrics_path: '/delivery-service/actuator/prometheus'
     static_configs:
       - targets: [ 'localhost:80' ]
+  - job_name: 'basket-service'
+    scrape_interval: 5s
+    metrics_path: '/basket-service/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:80' ]
+  - job_name: 'order-service'
+    scrape_interval: 5s
+    metrics_path: '/order-service/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:80' ]
+  - job_name: 'product-cudservice'
+    scrape_interval: 5s
+    metrics_path: '/product-cudservice/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:80' ]
+  - job_name: 'gatewayService_Client'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:80' ]
