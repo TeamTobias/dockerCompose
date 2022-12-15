@@ -21,3 +21,5 @@ scrape_configs:
   - job_name: 'delivery-service'
     scrape_interval: 5s
     metrics_path: '/delivery-service/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:80' ]
