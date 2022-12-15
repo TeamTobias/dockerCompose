@@ -401,12 +401,12 @@ services:
       - ~/volumes/jhipster/recentlyviewedService/cassandra/:/var/lib/cassandra/data
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
-    ports:
-      - 7000:7000
-      - 7001:7001
-      - 7199:7199
-      - 9042:9042
-      - 9160:9160
+#    ports:
+#      - 7000:7000
+#      - 7001:7001
+#      - 7199:7199
+#      - 9042:9042
+#      - 9160:9160
     networks:
       - tobias-network
 #  recentlyviewedservice-cassandra-migration:
@@ -437,7 +437,7 @@ services:
     networks:
       - tobias-network
 
-  app14:
+  app17:
     depends_on:
       - orderservice-postgresql
       - kafka
@@ -450,7 +450,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_DATASOURCE_PLATFORM=postgres
     volumes:
-      - /app14
+      - /app17
     networks:
       - tobias-network
 
