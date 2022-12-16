@@ -376,42 +376,50 @@ services:
 
 
 
-  app15:
+  recentlyviewedservice-cassandra:
+    image: cassandra:3.11.13
+    # volumes:
+    #   - ~/volumes/jhipster/recentlyviewedService/cassandra/:/var/lib/cassandra/data
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:7000:7000
+      - 127.0.0.1:7001:7001
+      - 127.0.0.1:7199:7199
+      - 127.0.0.1:9042:9042
+      - 127.0.0.1:9160:9160
+    networks:
+      - tobias
+  recentlyviewedservice-cassandra-migration:
+    environment:
+      - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
+      - USER=docker-cassandra-migration
+      # - DEBUG_LOG=1 # uncomment to show debug logs during the migration process
+      - CREATE_KEYSPACE_SCRIPT=create-keyspace.cql
+    build:
+      context: .
+      dockerfile: cassandra/Cassandra-Migration.Dockerfile
+    volumes:
+      - ../resources/config/cql:/cql:ro
+    networks:
+      - tobias
+  app:
     image: imkunyoung/recentlyviewedservice:1.0
     container_name: recentlyviewedservice
     depends_on:
       - recentlyviewedservice-cassandra
-      - kafka
-      - app5
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
       - spring.cloud.config.uri=http://configservice:8888
-      - spring.profiles.active=prod
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=prod,api-docs
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATA_CASSANDRA_CONTACTPOINTS=recentlyviewedservice-cassandra
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
-    volumes:
-      - /app15
+      #      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - spring.profiles.active=dev
+      #      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - spring.data.cassandra.contact-points=recentlyviewedservice-cassandra
+      #      - SPRING_DATA_CASSANDRA_PORT=9042
+      #      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+    #      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
     networks:
-      - tobias-network
-  recentlyviewedservice-cassandra:
-    image: cassandra:3.11.13
-    container_name: recentlyviewedservice-cassandra
-#    volumes:
-#      - ~/volumes/jhipster/recentlyviewedService/cassandra/:/var/lib/cassandra/data
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    #    ports:
-    #      - 7000:7000
-    #      - 7001:7001
-    #      - 7199:7199
-    #      - 9042:9042
-    #      - 9160:9160
-    networks:
-      - tobias-network
+      - tobias
   #  recentlyviewedservice-cassandra-migration:
   #    environment:
   #      - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
