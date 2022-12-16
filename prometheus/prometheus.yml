@@ -25,11 +25,13 @@ scrape_configs:
     # username: admin
     # password: admin
     metrics_path: /services/recentlyviewedService/management/prometheus
-    static_configs:
-      - targets:
-          # On MacOS, replace localhost by host.docker.internal
-          - localhost:8006
+#    static_configs:
+#      - targets:
+#          # On MacOS, replace localhost by host.docker.internal
+#          - localhost:8006
 
+    static_configs:
+      - targets: [ 'localhost:9090' ]
 
 
   - job_name: 'delivery-service'
