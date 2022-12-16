@@ -56,8 +56,11 @@ services:
   app5:
     image: imkunyoung/configservice:1.0
     container_name: configservice
+    depends_on:
+      - rabbitmq-stream
     environment:
       - eureka.client.serviceUrl.defaultZone=http://discoveryservice:8761/eureka/
+      - rabbitmq.host=rabbitmq-stream
     ports:
       - 8888:8888
     volumes:
@@ -554,7 +557,7 @@ services:
       - 9090:9090
     # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
     # grafana/provisioning/datasources/datasource.yml
-    network_mode: 'host' # to test locally running service
+#    network_mode: 'host' # to test locally running service
     networks:
       - tobias-network
   recentlyviewedservice-grafana:
@@ -571,7 +574,21 @@ services:
       - 3000:3000
     # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
     # grafana/provisioning/datasources/datasource.yml
-    network_mode: 'host' # to test locally running service
+#    network_mode: 'host' # to test locally running service
+    networks:
+      - tobias-network
+
+
+  rabbitmq-stream:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-stream
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "RabbitMQ-My-Cookies"
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "admin"
     networks:
       - tobias-network
 
