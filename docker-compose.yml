@@ -256,8 +256,8 @@ services:
   app11:
     image: imkunyoung/myapp:1.0
     container_name: myapp
-#    ports:
-#      - 3000:3000
+    ports:
+      - 3000:3000
     volumes:
       - /app11
   #    networks:
@@ -512,71 +512,71 @@ services:
 
 
 
-  jhipster-control-center:
-    image: 'jhipster/jhipster-control-center:v0.5.0'
-    command:
-      - /bin/sh
-      - -c
-      # Patch /etc/hosts to support resolving host.docker.internal to the internal IP address used by the host in all OSes
-      - echo "`ip route | grep default | cut -d ' ' -f3` host.docker.internal" | tee -a /etc/hosts > /dev/null && java -jar /jhipster-control-center.jar
-    environment:
-      - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=prod,api-docs,static
-      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      - SPRING_SECURITY_USER_PASSWORD=admin
-      # The token should have the same value than the one declared in you Spring configuration under the jhipster.security.authentication.jwt.base64-secret configuration's entry
-      - JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=N2ZiZTY0Y2I3MmJiNDgyZjNkNzdhZDczZjFlZmEzY2QyNGZkNDBmNmYxMGIzNjYyMTAxY2Q1MjA5NzQ2YWM1ODgzMTFkYzkwNDJiNDlhOGZjZTBkOWUwMTY0YjdmMjI4NTdjYWMyYWUzNDY5NGNlMjA2MjY0ZmNkNThmZjY2MTY=
-      - SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_RECENTLYVIEWEDSERVICE_0_URI=http://host.docker.internal:8006
-      - LOGGING_FILE_NAME=/tmp/jhipster-control-center.log
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 7419:7419
-    networks:
-      - tobias-network
-
-  recentlyviewedservice-hazelcast-management-center:
-    image: hazelcast/management-center:5.1.4
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 8180:8080
-    networks:
-      - tobias-network
-
-
-  recentlyviewedservice-prometheus:
-    image: prom/prometheus:v2.38.0
-    volumes:
-      - ./prometheus/:/etc/prometheus/
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 9090:9090
-    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
-    # grafana/provisioning/datasources/datasource.yml
-#    network_mode: 'host' # to test locally running service
-    networks:
-      - tobias-network
-  recentlyviewedservice-grafana:
-    image: grafana/grafana:9.1.0
-    volumes:
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 3000:3000
-    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
-    # grafana/provisioning/datasources/datasource.yml
-#    network_mode: 'host' # to test locally running service
-    networks:
-      - tobias-network
+#  jhipster-control-center:
+#    image: 'jhipster/jhipster-control-center:v0.5.0'
+#    command:
+#      - /bin/sh
+#      - -c
+#      # Patch /etc/hosts to support resolving host.docker.internal to the internal IP address used by the host in all OSes
+#      - echo "`ip route | grep default | cut -d ' ' -f3` host.docker.internal" | tee -a /etc/hosts > /dev/null && java -jar /jhipster-control-center.jar
+#    environment:
+#      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+#      - SPRING_PROFILES_ACTIVE=prod,api-docs,static
+#      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+#      - SPRING_SECURITY_USER_PASSWORD=admin
+#      # The token should have the same value than the one declared in you Spring configuration under the jhipster.security.authentication.jwt.base64-secret configuration's entry
+#      - JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=N2ZiZTY0Y2I3MmJiNDgyZjNkNzdhZDczZjFlZmEzY2QyNGZkNDBmNmYxMGIzNjYyMTAxY2Q1MjA5NzQ2YWM1ODgzMTFkYzkwNDJiNDlhOGZjZTBkOWUwMTY0YjdmMjI4NTdjYWMyYWUzNDY5NGNlMjA2MjY0ZmNkNThmZjY2MTY=
+#      - SPRING_CLOUD_DISCOVERY_CLIENT_SIMPLE_INSTANCES_RECENTLYVIEWEDSERVICE_0_URI=http://host.docker.internal:8006
+#      - LOGGING_FILE_NAME=/tmp/jhipster-control-center.log
+#    # If you want to expose these ports outside your dev PC,
+#    # remove the "127.0.0.1:" prefix
+#    ports:
+#      - 7419:7419
+#    networks:
+#      - tobias-network
+#
+#  recentlyviewedservice-hazelcast-management-center:
+#    image: hazelcast/management-center:5.1.4
+#    # If you want to expose these ports outside your dev PC,
+#    # remove the "127.0.0.1:" prefix
+#    ports:
+#      - 8180:8080
+#    networks:
+#      - tobias-network
+#
+#
+#  recentlyviewedservice-prometheus:
+#    image: prom/prometheus:v2.38.0
+#    volumes:
+#      - ./prometheus/:/etc/prometheus/
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#    # If you want to expose these ports outside your dev PC,
+#    # remove the "127.0.0.1:" prefix
+#    ports:
+#      - 9090:9090
+#    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
+#    # grafana/provisioning/datasources/datasource.yml
+##    network_mode: 'host' # to test locally running service
+#    networks:
+#      - tobias-network
+#  recentlyviewedservice-grafana:
+#    image: grafana/grafana:9.1.0
+#    volumes:
+#      - ./grafana/provisioning/:/etc/grafana/provisioning/
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=admin
+#      - GF_USERS_ALLOW_SIGN_UP=false
+#      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+#    # If you want to expose these ports outside your dev PC,
+#    # remove the "127.0.0.1:" prefix
+#    ports:
+#      - 3000:3000
+#    # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml and
+#    # grafana/provisioning/datasources/datasource.yml
+##    network_mode: 'host' # to test locally running service
+#    networks:
+#      - tobias-network
 
 
   rabbitmq-stream:
