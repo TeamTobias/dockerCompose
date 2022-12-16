@@ -389,7 +389,7 @@ services:
       - 127.0.0.1:9042:9042
       - 127.0.0.1:9160:9160
     networks:
-      - tobias
+      - tobias-network
   recentlyviewedservice-cassandra-migration:
     environment:
       - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
@@ -402,8 +402,8 @@ services:
     volumes:
       - ../resources/config/cql:/cql:ro
     networks:
-      - tobias
-  app:
+      - tobias-network
+  app15:
     image: imkunyoung/recentlyviewedservice:1.0
     container_name: recentlyviewedservice
     depends_on:
@@ -419,7 +419,7 @@ services:
       #      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     #      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
     networks:
-      - tobias
+      - tobias-network
   #  recentlyviewedservice-cassandra-migration:
   #    environment:
   #      - CASSANDRA_CONTACT_POINT=recentlyviewedservice-cassandra
